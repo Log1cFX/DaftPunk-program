@@ -4,57 +4,103 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Polygon;
-import java.awt.Rectangle;
+import java.awt.GridLayout;
+import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-public class Panel extends JPanel {
+public class Panel extends JPanel implements ActionListener {
 	private static final int SCREEN_WIDTH = 800;
 	private static final int SCREEN_HEIGHT = 400;
-	private int YgridSize = SCREEN_HEIGHT / 7;
-	private int XgridSize = SCREEN_WIDTH / 7;
+	ArrayList<CustomButton> buttonArray = new ArrayList<>();
+	private ScheduledExecutorService executor;
 
 	Panel() {
-		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+		// this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		this.setBackground(Color.BLACK);
 		this.setFocusable(true);
+		this.setLayout(new GridLayout(4,5,10,10));
+		addButtons();
+		buttonArray.forEach(b -> this.add(b));
+		buttonArray.forEach(b -> b.addActionListener(this));
 		startAudio();
-	}
-	
-	void startAudio() {
-		new Thread(new Runnable() {
-			// The wrapper thread is unnecessary, unless it blocks on the
-			// Clip finishing; see comments.
-			public void run() {
-				try {
-					Clip clip = AudioSystem.getClip();
-					File file = new File("ressources/Harder_Better_Faster_Stronger_Instrumental.wav");
-					AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
-					clip.open(inputStream);
-					clip.start();
-				} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}).start();
+		startPeriodicTask();
 	}
 
-	public void playSound(int index) {
-		switch(index) {
-		case 0 : 
+	private void addButtons() {
+		buttonArray.add(new CustomButton("work it"));
+		buttonArray.add(new CustomButton("make it"));
+		buttonArray.add(new CustomButton("do it"));
+		buttonArray.add(new CustomButton("make us"));
+		buttonArray.add(new CustomButton("harder"));
+		buttonArray.add(new CustomButton("better"));
+		buttonArray.add(new CustomButton("faster"));
+		buttonArray.add(new CustomButton("stronger"));
+		buttonArray.add(new CustomButton("more than"));
+		buttonArray.add(new CustomButton("hour"));
+		buttonArray.add(new CustomButton("our"));
+		buttonArray.add(new CustomButton("never"));
+		buttonArray.add(new CustomButton("ever"));
+		buttonArray.add(new CustomButton("after"));
+		buttonArray.add(new CustomButton("work is"));
+		buttonArray.add(new CustomButton("over"));
+	}
+
+	private void startPeriodicTask() {
+		executor = Executors.newScheduledThreadPool(1);
+		Runnable task = () -> repaint();
+		executor.scheduleAtFixedRate(task, 0, 100, TimeUnit.MILLISECONDS);
+	}
+
+	void startAudio() {
+		try {
+			Clip clip = AudioSystem.getClip();
+			File file = new File("ressources/Harder_Better_Faster_Stronger_Instrumental.wav");
+			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
+			clip.open(inputStream);
+			clip.start();
+		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+			e.printStackTrace();
 		}
 	}
+
+	public void playSound(String name) {
+		try {
+			Clip clip = AudioSystem.getClip();
+			File file = new File("ressources/" + name + ".wav");
+			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
+			clip.open(inputStream);
+			clip.start();
+		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void paintComponent(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g;
+		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		super.paintComponent(g);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		for (CustomButton a : buttonArray) {
+			if (a.getText() == e.getActionCommand()) {
+				playSound(a.getText());
+			}
+		}
 	}
 }
