@@ -22,11 +22,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JPanel;
 
 public class Panel extends JPanel implements ActionListener {
-	private static final int SCREEN_WIDTH = 800;
-	private static final int SCREEN_HEIGHT = 400;
 	ArrayList<CustomButton> buttonArray = new ArrayList<>();
-	private ScheduledExecutorService executor;
-
+	
 	Panel() {
 		// this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		this.setBackground(Color.BLACK);
@@ -36,7 +33,7 @@ public class Panel extends JPanel implements ActionListener {
 		buttonArray.forEach(b -> this.add(b));
 		buttonArray.forEach(b -> b.addActionListener(this));
 		startAudio();
-		startPeriodicTask();
+		//startPeriodicTask();
 	}
 
 	private void addButtons() {
@@ -56,24 +53,6 @@ public class Panel extends JPanel implements ActionListener {
 		buttonArray.add(new CustomButton("after"));
 		buttonArray.add(new CustomButton("work is"));
 		buttonArray.add(new CustomButton("over"));
-	}
-
-	private void startPeriodicTask() {
-		executor = Executors.newScheduledThreadPool(1);
-		Runnable task = () -> repaint();
-		executor.scheduleAtFixedRate(task, 0, 100, TimeUnit.MILLISECONDS);
-	}
-
-	void startAudio() {
-		try {
-			Clip clip = AudioSystem.getClip();
-			File file = new File("ressources/Harder_Better_Faster_Stronger_Instrumental.wav");
-			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
-			clip.open(inputStream);
-			clip.start();
-		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void playSound(String name) {
