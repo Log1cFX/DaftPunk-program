@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 public class AudioControlPanel extends JPanel implements ActionListener{
 	ArrayList<CustomButton> buttonArray = new ArrayList<>();
 	Clip clip;
-	AudioControlPanel(Clip clip) {
+	AudioControlPanel() {
 		startAudio();
 		addButton();
 		buttonArray.forEach(b -> this.add(b));
@@ -41,7 +41,8 @@ public class AudioControlPanel extends JPanel implements ActionListener{
 	}
 	
 	private void addButton() {
-		buttonArray.add(new CustomButton("work it"));
+		buttonArray.add(new CustomButton("+30"));
+		buttonArray.add(new CustomButton("-30"));
 	}
 	public void paintComponent(Graphics g) {
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -49,11 +50,17 @@ public class AudioControlPanel extends JPanel implements ActionListener{
 	}
 
 	private void perfomAudioAction(String text) {
-		speedChange(1.5);
+		switch(text){
+		case "+30" : clip.setMicrosecondPosition(clip.getMicrosecondPosition() + 30*1000000);
+		break;
+		case "-30" : clip.setMicrosecondPosition(clip.getMicrosecondPosition() - 30*1000000);
+		break;
+		}
+		System.out.println(clip.getMicrosecondPosition());
 	}
 	
 	private void speedChange(Double speed) {
-		clip.
+		
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {

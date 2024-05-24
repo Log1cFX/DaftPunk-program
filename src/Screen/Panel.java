@@ -32,7 +32,6 @@ public class Panel extends JPanel implements ActionListener {
 		addButtons();
 		buttonArray.forEach(b -> this.add(b));
 		buttonArray.forEach(b -> b.addActionListener(this));
-		startAudio();
 		//startPeriodicTask();
 	}
 
