@@ -1,9 +1,8 @@
-package Screen;
+package com.ladoc.raffi.daft_punk;
 
 
 public class Main {
 	public static void main(String[] args) {
-		System.out.println("ffffffffffffffffffffffffffffffffffffffffff");
 		new Frame();
 	}
 }

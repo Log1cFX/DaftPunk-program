@@ -1,9 +1,12 @@
-package Screen;
+package com.ladoc.raffi.daft_punk;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +25,7 @@ public class AudioControlPanel extends JPanel implements ActionListener{
 	ArrayList<CustomButton> buttonArray = new ArrayList<>();
 	Clip clip;
 	AudioControlPanel() {
+		this.setBackground(Color.black);
 		startAudio();
 		addButton();
 		buttonArray.forEach(b -> this.add(b));
@@ -31,7 +35,7 @@ public class AudioControlPanel extends JPanel implements ActionListener{
 	void startAudio() {
 		try {
 			clip = AudioSystem.getClip();
-			File file = new File("ressources/Harder_Better_Faster_Stronger_Instrumental.wav");
+			File file = new File("src/main/resources/Harder_Better_Faster_Stronger_Instrumental.wav");
 			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
 			clip.open(inputStream);
 			clip.start();
@@ -43,6 +47,7 @@ public class AudioControlPanel extends JPanel implements ActionListener{
 	private void addButton() {
 		buttonArray.add(new CustomButton("+30"));
 		buttonArray.add(new CustomButton("-30"));
+		buttonArray.add(new CustomButton("restart"));
 	}
 	public void paintComponent(Graphics g) {
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -55,6 +60,7 @@ public class AudioControlPanel extends JPanel implements ActionListener{
 		break;
 		case "-30" : clip.setMicrosecondPosition(clip.getMicrosecondPosition() - 30*1000000);
 		break;
+		case "restart" : clip.setMicrosecondPosition(0);
 		}
 		System.out.println(clip.getMicrosecondPosition());
 	}

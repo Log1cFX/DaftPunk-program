@@ -1,6 +1,8 @@
-package Screen;
+package com.ladoc.raffi.daft_punk;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -25,7 +27,6 @@ public class Panel extends JPanel implements ActionListener {
 	ArrayList<CustomButton> buttonArray = new ArrayList<>();
 	
 	Panel() {
-		// this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		this.setBackground(Color.BLACK);
 		this.setFocusable(true);
 		this.setLayout(new GridLayout(4,5,10,10));
@@ -57,7 +58,7 @@ public class Panel extends JPanel implements ActionListener {
 	public void playSound(String name) {
 		try {
 			Clip clip = AudioSystem.getClip();
-			File file = new File("ressources/" + name + ".wav");
+			File file = new File("src/main/resources/" + name + ".wav");
 			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
 			clip.open(inputStream);
 			clip.start();

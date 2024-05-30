@@ -1,4 +1,4 @@
-package Screen;
+package com.ladoc.raffi.daft_punk;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -30,8 +30,8 @@ public class CustomButton extends JButton {
 
 	public static Color[] randomGradient() {
 		Random rand = new Random();
-		Color color1 = new Color(rand.nextInt(10, 256), rand.nextInt(10, 256), rand.nextInt(10, 256));
-		Color color2 = new Color(rand.nextInt(10, 256), rand.nextInt(10, 256), rand.nextInt(10, 256));
+		Color color1 = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+		Color color2 = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
 		return new Color[] { color1, color2 };
 	}
 
