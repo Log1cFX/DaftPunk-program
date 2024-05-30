@@ -26,6 +26,7 @@ public class AudioControlPanel extends JPanel implements ActionListener{
 	Clip clip;
 	AudioControlPanel() {
 		this.setBackground(Color.black);
+		this.setLayout(new GridLayout(1,3,10,10));
 		startAudio();
 		addButton();
 		buttonArray.forEach(b -> this.add(b));
