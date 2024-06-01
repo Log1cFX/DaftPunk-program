@@ -1,9 +1,6 @@
 package com.ladoc.raffi.daft_punk;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -46,9 +43,9 @@ public class AudioControlPanel extends JPanel implements ActionListener{
 	}
 	
 	private void addButton() {
-		buttonArray.add(new CustomButton("+30"));
 		buttonArray.add(new CustomButton("-30"));
 		buttonArray.add(new CustomButton("restart"));
+		buttonArray.add(new CustomButton("+30"));
 	}
 	public void paintComponent(Graphics g) {
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -64,10 +61,6 @@ public class AudioControlPanel extends JPanel implements ActionListener{
 		case "restart" : clip.setMicrosecondPosition(0);
 		}
 		System.out.println(clip.getMicrosecondPosition());
-	}
-	
-	private void speedChange(Double speed) {
-		
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {

@@ -6,11 +6,13 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -21,19 +23,21 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class Panel extends JPanel implements ActionListener {
 	ArrayList<CustomButton> buttonArray = new ArrayList<>();
-	
+	Image bg;
+
 	Panel() {
-		this.setBackground(Color.BLACK);
+		bg = new ImageIcon("src/main/resources/daft_punk.jpg").getImage();
 		this.setFocusable(true);
-		this.setLayout(new GridLayout(4,5,10,10));
+		this.setLayout(new GridLayout(4, 5, 10, 10));
 		addButtons();
 		buttonArray.forEach(b -> this.add(b));
 		buttonArray.forEach(b -> b.addActionListener(this));
-		//startPeriodicTask();
+		// startPeriodicTask();
 	}
 
 	private void addButtons() {
@@ -70,6 +74,7 @@ public class Panel extends JPanel implements ActionListener {
 	public void paintComponent(Graphics g) {
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		super.paintComponent(g);
+		g.drawImage(bg, 0, 0, getWidth(), getHeight(), null);
 	}
 
 	@Override
