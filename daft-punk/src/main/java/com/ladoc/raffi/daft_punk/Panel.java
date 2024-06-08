@@ -1,8 +1,5 @@
 package com.ladoc.raffi.daft_punk;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -10,20 +7,17 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class Panel extends JPanel implements ActionListener {
@@ -31,7 +25,11 @@ public class Panel extends JPanel implements ActionListener {
 	Image bg;
 
 	Panel() {
-		bg = new ImageIcon("src/main/resources/daft_punk.jpg").getImage();
+		try {
+			bg = ImageIO.read(this.getClass().getResourceAsStream("/daft_punk.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		this.setFocusable(true);
 		this.setLayout(new GridLayout(4, 5, 10, 10));
 		addButtons();
@@ -59,12 +57,14 @@ public class Panel extends JPanel implements ActionListener {
 		buttonArray.add(new CustomButton("over"));
 	}
 
+
 	public void playSound(String name) {
 		try {
 			Clip clip = AudioSystem.getClip();
-			File file = new File("src/main/resources/" + name + ".wav");
-			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
-			clip.open(inputStream);
+			InputStream rawInputStream = getClass().getResourceAsStream("/"+name+".wav");
+			BufferedInputStream inputStream = new BufferedInputStream(rawInputStream);
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream);
+			clip.open(audioInputStream);
 			clip.start();
 		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
 			e.printStackTrace();

@@ -7,8 +7,9 @@ import java.awt.GridLayout;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.sound.sampled.AudioInputStream;
@@ -33,9 +34,10 @@ public class AudioControlPanel extends JPanel implements ActionListener{
 	void startAudio() {
 		try {
 			clip = AudioSystem.getClip();
-			File file = new File("src/main/resources/Harder_Better_Faster_Stronger_Instrumental.wav");
-			AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
-			clip.open(inputStream);
+			InputStream rawInputStream = getClass().getResourceAsStream("/Harder_Better_Faster_Stronger_Instrumental.wav");
+			BufferedInputStream inputStream = new BufferedInputStream(rawInputStream);
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream);
+			clip.open(audioInputStream);
 			clip.start();
 		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
 			e.printStackTrace();
